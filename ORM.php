@@ -22,6 +22,7 @@ abstract class ORM implements \jsonSerializable {
 	public function __construct()
 	{
 		$this->campos = array();
+		$this->campos[lcfirst(static::$identificador)] = 0;
 	}
 	
 	public static function createObjectFromArray($arreglo)
@@ -30,11 +31,8 @@ abstract class ORM implements \jsonSerializable {
 		foreach($arreglo as $key => $value)
 		{
 			$key_minus = lcfirst($key);
-			if(isValidDateTime($value)) {
-				$fecha = Carbon::parse($value);
-				$obj->campos[$key_minus] = $fecha;
-				continue;
-			}
+			if(isValidDateTime($value))
+				$value = Carbon::parse($value);
 			$obj->campos[$key_minus] = $value;
 		}
 		
@@ -48,9 +46,11 @@ abstract class ORM implements \jsonSerializable {
 		global $database;
 		$tabla = static::$tabla;
 		
-		$query = "SELECT * FROM $tabla WHERE " . $where->format();
+		$query = "SELECT * FROM $tabla " . $where->format();
 		
 		$consulta = $database->query($query);
+		if (!$consulta)
+			throw new Exception('QUERY ERROR: ' . $database->error);
 		if($consulta->num_rows == 0)
 			return null;
 		$res = $consulta->fetch_assoc();
@@ -64,13 +64,11 @@ abstract class ORM implements \jsonSerializable {
 		$tabla = static::$tabla;
 		$lista = [];
 		
-		$query = "SELECT * FROM $tabla WHERE " . $where->format();
+		$query = "SELECT * FROM $tabla " . $where->format();
 		
 		$consulta = $database->query($query);
 		while($res = $consulta->fetch_assoc())
-		{
 			array_push($lista, self::createObjectFromArray($res));
-		}
 		
 		return $lista;
 	}
@@ -81,6 +79,9 @@ abstract class ORM implements \jsonSerializable {
 		$tabla_format = static::$tabla;
 		$identificador = static::$identificador;
 		$consulta = $database->query("SELECT * FROM $tabla_format WHERE $identificador = $id");
+		if (!$consulta)
+			throw new Exception('QUERY ERROR: ' . $database->error);
+		
 		if ($consulta && $consulta->num_rows == 1)
 		{
 			$res = $consulta->fetch_assoc();
@@ -94,10 +95,11 @@ abstract class ORM implements \jsonSerializable {
 		$lista = [];
 		$tabla = static::$tabla;
 		$consulta = $database->query("SELECT * FROM $tabla");
+		if (!$consulta)
+			throw new Exception('QUERY ERROR: ' . $database->error);
+		
 		while($res = $consulta->fetch_assoc())
-		{
 			array_push($lista, self::createObjectFromArray($res));
-		}
 		
 		return $lista;
 	}
@@ -108,6 +110,8 @@ abstract class ORM implements \jsonSerializable {
 		$tabla = static::$tabla;
 		$identi = static::$identificador;
 		$consulta = $database->query("DELETE FROM $tabla WHERE $identi = " . $this->campos[lcfirst($identi)]);
+		if (!$consulta)
+			throw new Exception('QUERY ERROR: ' . $database->error);
 	}
 	
 	public function save()
@@ -115,20 +119,13 @@ abstract class ORM implements \jsonSerializable {
 		global $database;
 		$tabla = static::$tabla;
 		$identi = static::$identificador;
-		$lista = array();
 		$query = "UPDATE $tabla SET ";
-		foreach($this->campos as $key => $value) {
-			if($value != "") {
-				if(is_numeric($value))
-					$query .= "$key = $value, ";
-				else
-					$query .= "$key = '$value', ";
-			}
-		}
-		$query = rtrim($query, ", ");
+		$query .= ORM::queryBuilder($this->campos);
 		$query .= " WHERE $identi = " . $this->campos[lcfirst($identi)];
-		
 		$consulta = $database->query($query);
+		if($consulta)
+			return true;
+		throw new Exception('QUERY ERROR: ' . $database->error);
 	}
 	
 	public function insert()
@@ -138,35 +135,45 @@ abstract class ORM implements \jsonSerializable {
 		$identi = static::$identificador;
 		$lista = array();
 		$query = "INSERT INTO $tabla SET ";
-		foreach($this->campos as $key => $value) {
-			if($value != "") {
-				if(is_numeric($value))
-					$query .= "$key = $value, ";
-				else
-					$query .= "$key = '$value', ";
-			}
-		}
-		$query = rtrim($query, ", ");
+		$query .= ORM::queryBuilder($this->campos);
 		$consulta = $database->query($query);
+		$this->campos[lcfirst($identi)] = $database->insert_id; #Recuperamos el ID Autogenerado y lo guardamos en el objeto.
 		
-		// Recuperamos la ID
-		$consulta2 = $database->query("SELECT * FROM $tabla ORDER BY $identi DESC");
-		$res2 = $consulta2->fetch_assoc();
-		
-		$this->campos[lcfirst($identi)] = $res2[$identi];
+		if($consulta)
+			return true;
+		throw new Exception('QUERY ERROR: ' . $database->error);
 	}
 	
 	public function jsonSerialize()
 	{
 		return $this->campos;
 	}
+	
+	private static function queryBuilder($array)
+	{
+		$query = "";
+		foreach($array as $campo => $valor)
+		{
+			if($valor === null)
+				$query .= "$campo = null, ";
+			else if(is_numeric($valor))
+				$query .= "$campo = $valor, ";
+			else
+				$query .= "$campo = '$valor', ";
+		}
+		$query = rtrim($query, ", ");
+		
+		return $query;
+	}
 }
 
 class Where {
 	private $query;
+	private $order;
 	
 	public function __construct() {
 		$this->query = [];
+		$this->order = "";
 	}
 	
 	public function addWhere($campo, $operador, $valor) {
@@ -175,16 +182,26 @@ class Where {
 		array_push($this->query, $data);
 	}
 	
+	public function setOrder($campo, $tipo) {
+		$this->order = "ORDER BY $campo $tipo";
+	}
+	
 	public function format() {
 		$consulta = "";
+		if(!empty($this->query))
+			$consulta = "WHERE ";
 		foreach($this->query as $parametro) {
 			$campo = $parametro[0];
 			$operador = $parametro[1];
 			$valor = $parametro[2];
-			
-			$consulta .= "$campo $operador '$valor' AND ";
+			if($valor === NULL)
+				$consulta .= "$campo $operador NULL AND ";
+			else
+				$consulta .= "$campo $operador '$valor' AND ";
 		}
 		$consulta = rtrim($consulta, " AND ");
+		if($this->order)
+			$consulta .= " ".$this->order;
 		return $consulta;
 	}
 }
