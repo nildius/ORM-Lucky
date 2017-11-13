@@ -1,39 +1,81 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: Lucky
- * Date: 07/06/2017
- * Time: 20:08
- */
-abstract class Auth
+class Auth
 {
-	public static function RedireccionarOffline()
+	private static $instancia;
+	private $usuario;
+	
+	public function __construct()
 	{
-		if(!isset($_SESSION['id'])) {
-			header('location: ./index.php');
+		$this->usuario = isset($_SESSION['id']) ? Usuario::get($_SESSION['id']) : null;
+	}
+	
+	public static function getAuth()
+	{
+		if(isset(self::$instancia))
+			return self::$instancia;
+		return new Auth;
+	}
+	
+	public function getUsuario()
+	{
+		return $this->usuario;
+	}
+	
+	public function RedireccionarOffline()
+	{
+		if(!$this->getUsuario()) {
+			header('location: ../index.php');
+			die();
 		}
 	}
 	
-	public static function getUsuarioConectado()
+	public function setUsuarioConectado($id)
 	{
-		if(isset($_SESSION['id'])) {
-			return Usuario::get($_SESSION['id']);
-		}
-		return null;
+		$_SESSION['id'] = $id;
+		$this->usuario = Usuario::get($id);
 	}
 	
-	public static function isUserLogged()
+	public function deleteUsuario()
 	{
-		return isset($_SESSION['id']) && $_SESSION['id'] > 0;
+		unset($_SESSION['id']);
+		$this->usuario = NULL;
 	}
 	
-	public static function kickIfNotAdmin()
+	public function addError($error)
 	{
-		if(!self::isUserLogged())
+		if(!isset($_SESSION['error']))
+			$_SESSION['error'] = [];
+		$_SESSION['error'][] = $error;
+	}
+	
+	public function getErrores()
+	{
+		return isset($_SESSION['error']) ? $_SESSION['error'] : [];
+	}
+	
+	public function deleteErrores()
+	{
+		unset($_SESSION['error']);
+	}
+	
+	public function isUserLogged()
+	{
+		return $this->usuario == null;
+	}
+	
+	public function kickIfNotAdmin()
+	{
+		if(!$this->isUserLogged())
 			header("Location: error.php");
-		$usuario = self::getUsuarioConectado();
+		$usuario = $this->getUsuarioConectado();
 		if(!$usuario->isAdmin())
 			header("Location: error.php");
+	}
+	
+	public static function crypt($texto)
+	{
+		$sal = "poltec20175-qklr.9Xvfe34F2le";
+		return(sha1($sal . $texto));
 	}
 }
