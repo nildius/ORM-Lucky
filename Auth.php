@@ -1,11 +1,13 @@
 <?php
 
+define("SALT", "salsalsal-qklr.9Xvfe34F2le");
+
 class Auth
 {
 	private static $instancia;
 	private $usuario;
 	
-	public function __construct()
+	private function __construct()
 	{
 		$this->usuario = isset($_SESSION['id']) ? Usuario::get($_SESSION['id']) : null;
 	}
@@ -13,8 +15,8 @@ class Auth
 	public static function getAuth()
 	{
 		if(isset(self::$instancia))
-			return self::$instancia;
-		return new Auth;
+			self::$instancia = new Auth();
+		return self::$instancia;
 	}
 	
 	public function getUsuario()
@@ -30,13 +32,13 @@ class Auth
 		}
 	}
 	
-	public function setUsuarioConectado($id)
+	public function login($id)
 	{
 		$_SESSION['id'] = $id;
 		$this->usuario = Usuario::get($id);
 	}
 	
-	public function deleteUsuario()
+	public function logout()
 	{
 		unset($_SESSION['id']);
 		$this->usuario = NULL;
@@ -75,7 +77,6 @@ class Auth
 	
 	public static function crypt($texto)
 	{
-		$sal = "poltec20175-qklr.9Xvfe34F2le";
-		return(sha1($sal . $texto));
+		return(sha1(SALT . $texto));
 	}
 }
