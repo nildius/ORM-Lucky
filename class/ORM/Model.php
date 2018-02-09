@@ -32,7 +32,7 @@ abstract class Model implements \jsonSerializable {
 		foreach($arreglo as $key => $value)
 		{
 			$key_minus = lcfirst($key);
-			if(isValidDateTime($value))
+			if(Validator::isValidDateTime($value))
 				$value = Carbon::parse($value);
 			$obj->campos[$key_minus] = $value;
 		}
@@ -77,20 +77,26 @@ abstract class Model implements \jsonSerializable {
 	
 	public static function get($id)
 	{
-		global $database;
+		$database = \Database::getInstance()->getConexion();
 		if($id === null)
 			return null;
 		$tabla_format = static::$tabla;
 		$identificador = static::$identificador;
-		$consulta = $database->query("SELECT * FROM $tabla_format WHERE $identificador = $id");
-		if (!$consulta)
-			throw new \Exception('QUERY ERROR: ' . $database->error);
+		$pedido = "SELECT * FROM $tabla_format WHERE $identificador = ?";
+		$query = $database->prepare($pedido);
+		$query->bind_param("i", $id);
+		$query->execute();
+		$resultado = $query->get_result();
+		if ($query->error)
+			throw new \Exception('QUERY ERROR: ' . $query->error);
 		
-		if ($consulta && $consulta->num_rows == 1)
+		if ($resultado->num_rows == 1)
 		{
-			$res = $consulta->fetch_assoc();
-			return self::createObjectFromArray($res);
+			$data = $resultado->fetch_assoc();
+			return self::createObjectFromArray($data);
 		}
+		
+		$query->free_result();
 	}
 	
 	public static function getAll()
@@ -120,16 +126,23 @@ abstract class Model implements \jsonSerializable {
 	
 	public function save()
 	{
-		global $database;
+		$database = \Database::getInstance()->getConexion();
+		$queryBuilder = new QueryBuilder($this->campos);
 		$tabla = static::$tabla;
 		$identi = static::$identificador;
-		$query = "UPDATE $tabla SET ";
-		$query .= Model::queryBuilder($this->campos);
-		$query .= " WHERE $identi = " . $this->campos[lcfirst($identi)];
-		$consulta = $database->query($query);
-		if($consulta)
-			return true;
-		throw new \Exception('QUERY ERROR: ' . $database->error);
+		$consulta = "UPDATE $tabla SET ";
+		$consulta .= $queryBuilder->getQuery();
+		$consulta .= " WHERE $identi = " . $this->campos[lcfirst($identi)];
+		$query = $database->prepare($consulta);
+		
+		$listaValoresPorReferencia = [];
+		foreach($queryBuilder->getValores() as $valor) {
+			$listaValoresPorReferencia[] = &$valor;
+		}
+		call_user_func_array(array($query, "bind_param"), array_merge(array($queryBuilder->getTipos(), $listaValoresPorReferencia)));
+		$query->execute();
+		if($query->error)
+			throw new \Exception('QUERY ERROR: ' . $database->error);
 	}
 	
 	public function insert()
@@ -151,22 +164,5 @@ abstract class Model implements \jsonSerializable {
 	public function jsonSerialize()
 	{
 		return $this->campos;
-	}
-	
-	private static function queryBuilder($array)
-	{
-		$query = "";
-		foreach($array as $campo => $valor)
-		{
-			if($valor === null)
-				$query .= "$campo = null, ";
-			else if(is_numeric($valor))
-				$query .= "$campo = $valor, ";
-			else
-				$query .= "$campo = '$valor', ";
-		}
-		$query = rtrim($query, ", ");
-		
-		return $query;
 	}
 }
