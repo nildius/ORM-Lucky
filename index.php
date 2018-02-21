@@ -1,11 +1,7 @@
 <?php
-require_once("config.php");
 
-echo "Hacemos las pruebiñas<br><br>";
-$user = Usuario::get(3);
+use Carbon\Carbon;
+use Database\Database;
+use Usuario\Usuario;
 
-echo "YO SOY $user->id Y ME LLAMO $user->nombre <br><br>";
-$user->id = 3;
-$user->nombre = "BESPUCIO";
-
-$user->save();
+require_once("libs/core.php");

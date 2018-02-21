@@ -2,12 +2,13 @@
 namespace ORM;
 
 use Carbon\Carbon as Carbon;
+use Database\Database;
+use PDO;
 
 abstract class Model implements \jsonSerializable {
 	protected $campos;
 	protected static $tabla;
 	protected static $identificador;
-	
 	// METODOS MAGICOS
 	
 	public function __get($key)
@@ -44,15 +45,14 @@ abstract class Model implements \jsonSerializable {
 	
 	public static function where(Formatter $where)
 	{
-		global $database;
+		$database = Database::getInstance()->connect();
 		$tabla = static::$tabla;
 		
 		$query = "SELECT * FROM $tabla " . $where->format();
 		
 		$consulta = $database->query($query);
-		if (!$consulta)
-			throw new \Exception('QUERY ERROR: ' . $database->error);
-		if($consulta->num_rows == 0)
+		$resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+		if(count($resultado) == 0)
 			return null;
 		$res = $consulta->fetch_assoc();
 		
@@ -61,15 +61,30 @@ abstract class Model implements \jsonSerializable {
 	
 	public static function whereMultiple(Formatter $where)
 	{
-		global $database;
+		$database = Database::getInstance()->connect();
 		$tabla = static::$tabla;
 		$lista = [];
 		
 		$query = "SELECT * FROM $tabla " . $where->format();
 		
 		$consulta = $database->query($query);
-		//echo $query ."<br>";
-		while($res = $consulta->fetch_assoc())
+		while($res = $consulta->fetchObject())
+			array_push($lista, self::createObjectFromArray($res));
+		
+		return $lista;
+	}
+	
+	public static function whereRaw(String $string)
+	{
+		$database = Database::getInstance()->connect();
+		$tabla = static::$tabla;
+		$lista = [];
+		
+		$query = "SELECT * FROM $tabla WHERE " . $string;
+		
+		$consulta = $database->query($query);
+		$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
+		foreach($resultados as $res)
 			array_push($lista, self::createObjectFromArray($res));
 		
 		return $lista;
@@ -77,26 +92,18 @@ abstract class Model implements \jsonSerializable {
 	
 	public static function get($id)
 	{
-		$database = \Database::getInstance()->getConexion();
 		if($id === null)
 			return null;
-		$tabla_format = static::$tabla;
+		$database = Database::getInstance()->connect();
+		$tabla = static::$tabla;
 		$identificador = static::$identificador;
-		$pedido = "SELECT * FROM $tabla_format WHERE $identificador = ?";
-		$query = $database->prepare($pedido);
-		$query->bind_param("i", $id);
+		$query = $database->prepare("SELECT * FROM $tabla WHERE $identificador = :id");
+		$query->bindParam(":id", $id, PDO::PARAM_INT);
 		$query->execute();
-		$resultado = $query->get_result();
-		if ($query->error)
-			throw new \Exception('QUERY ERROR: ' . $query->error);
-		
-		if ($resultado->num_rows == 1)
-		{
-			$data = $resultado->fetch_assoc();
-			return self::createObjectFromArray($data);
-		}
-		
-		$query->free_result();
+		$result = $query->fetchAll(PDO::FETCH_ASSOC);
+		if(count($result) == 1)
+			return self::createObjectFromArray($result[0]);
+		return null;
 	}
 	
 	public static function getAll()
@@ -105,10 +112,9 @@ abstract class Model implements \jsonSerializable {
 		$lista = [];
 		$tabla = static::$tabla;
 		$consulta = $database->query("SELECT * FROM $tabla");
-		if (!$consulta)
-			throw new \Exception('QUERY ERROR: ' . $database->error);
 		
-		while($res = $consulta->fetch_assoc())
+		$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
+		foreach($resultados as $res)
 			array_push($lista, self::createObjectFromArray($res));
 		
 		return $lista;
@@ -116,49 +122,48 @@ abstract class Model implements \jsonSerializable {
 	
 	public function delete()
 	{
-		global $database;
+		$database = Database::getInstance()->connect();
 		$tabla = static::$tabla;
 		$identi = static::$identificador;
-		$consulta = $database->query("DELETE FROM $tabla WHERE $identi = " . $this->campos[lcfirst($identi)]);
-		if (!$consulta)
-			throw new \Exception('QUERY ERROR: ' . $database->error);
+		$database->query("DELETE FROM $tabla WHERE $identi = " . $this->campos[lcfirst($identi)]);
 	}
 	
 	public function save()
 	{
-		$database = \Database::getInstance()->getConexion();
+		$database = Database::getInstance()->connect();
 		$queryBuilder = new QueryBuilder($this->campos);
 		$tabla = static::$tabla;
 		$identi = static::$identificador;
 		$consulta = "UPDATE $tabla SET ";
 		$consulta .= $queryBuilder->getQuery();
-		$consulta .= " WHERE $identi = " . $this->campos[lcfirst($identi)];
-		$query = $database->prepare($consulta);
+		$consulta .= " WHERE $identi = " . $this->campos[$identi];
 		
-		$listaValoresPorReferencia = [];
-		foreach($queryBuilder->getValores() as $valor) {
-			$listaValoresPorReferencia[] = &$valor;
+		$query = $database->prepare($consulta);
+		foreach($queryBuilder->getListaCampos() as $pack) {
+			$query->bindParam($pack['bind'], $pack['value'], $pack['type']);
 		}
-		call_user_func_array(array($query, "bind_param"), array_merge(array($queryBuilder->getTipos(), $listaValoresPorReferencia)));
 		$query->execute();
-		if($query->error)
-			throw new \Exception('QUERY ERROR: ' . $database->error);
 	}
 	
 	public function insert()
 	{
-		global $database;
+		$database = Database::getInstance()->connect();
 		$tabla = static::$tabla;
 		$identi = static::$identificador;
-		$lista = array();
-		$query = "INSERT INTO $tabla SET ";
-		$query .= Model::queryBuilder($this->campos);
-		$consulta = $database->query($query);
-		$this->campos[lcfirst($identi)] = $database->insert_id; #Recuperamos el ID Autogenerado y lo guardamos en el objeto.
+		$queryBuilder = new QueryBuilder($this->campos);
+		$consulta = "INSERT INTO $tabla SET ";
+		$consulta .= $queryBuilder->getQuery();
 		
+		$query = $database->prepare($consulta);
+		foreach($queryBuilder->getListaCampos() as $pack) {
+			$query->bindParam($pack['bind'], $pack['value'], $pack['type']);
+		}
+		$query->execute();
+		
+		$this->campos[lcfirst($identi)] = $database->lastInsertId(); #Recuperamos el ID Autogenerado y lo guardamos en el objeto.
 		if($consulta)
 			return true;
-		throw new \Exception('QUERY ERROR: ' . $database->error);
+		return false;
 	}
 	
 	public function jsonSerialize()

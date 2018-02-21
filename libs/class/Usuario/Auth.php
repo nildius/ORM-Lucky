@@ -1,10 +1,18 @@
 <?php
+/*
+ * Clase: Auth
+ * Autor: Lucas E. Lois (lucaslois95@gmail.com)
+ * Esta clase Singleton encapsula el login y logout del usuario, guardando dentro de si la persona que está conectada en el sistema.
+ * El objetivo de esta clase es encapsular el comportamiento de las variables de sesión.
+ */
+namespace Usuario;
 
 define("SALT", "salsalsal-qklr.9Xvfe34F2le");
 
 class Auth
 {
 	private static $instancia;
+	
 	private $usuario;
 	
 	private function __construct()
@@ -35,13 +43,20 @@ class Auth
 	public function login($id)
 	{
 		$_SESSION['id'] = $id;
-		$this->usuario = Usuario::get($id);
+		$_SESSION['logged'] = true;
+ 		$this->usuario = Usuario::get($id);
 	}
 	
 	public function logout()
 	{
 		unset($_SESSION['id']);
+		unset($_SESSION['logged']);
 		$this->usuario = NULL;
+	}
+	
+	public function isUserLogged()
+	{
+		return $this->usuario !== null;
 	}
 	
 	public function addError($error)
@@ -59,11 +74,6 @@ class Auth
 	public function deleteErrores()
 	{
 		unset($_SESSION['error']);
-	}
-	
-	public function isUserLogged()
-	{
-		return $this->usuario !== null;
 	}
 	
 	public function kickIfNotAdmin()

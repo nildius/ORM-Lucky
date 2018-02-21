@@ -2,7 +2,7 @@
 namespace ORM;
 
 class Formatter {
-	private $query;
+	private $listaCampos;
 	private $order;
 	
 	public function __construct() {
@@ -15,7 +15,7 @@ class Formatter {
 	public function addWhere($campo, $operador, $valor) {
 		$data = [$campo, $operador, $valor];
 		
-		array_push($this->query, $data);
+		array_push($this->listaCampos, $data);
 	}
 	
 	public function setOrder($campo, $tipo) {
@@ -32,16 +32,16 @@ class Formatter {
 	
 	public function format() {
 		$consulta = "";
-		if(!empty($this->query))
+		if(!empty($this->listaCampos))
 			$consulta = "WHERE ";
-		foreach($this->query as $parametro) {
-			$campo = $parametro[0];
-			$operador = $parametro[1];
-			$valor = $parametro[2];
+		foreach($this->listaCampos as $campo) {
+			$key = $campo[0];
+			$operador = $campo[1];
+			$valor = $campo[2];
 			if($valor === NULL)
-				$consulta .= "$campo $operador NULL AND ";
+				$consulta .= "$key $operador NULL AND ";
 			else
-				$consulta .= "$campo $operador '$valor' AND ";
+				$consulta .= "$key $operador '$valor' AND ";
 		}
 		$consulta = rtrim($consulta, " AND ");
 		if(count($this->order) > 0) {
