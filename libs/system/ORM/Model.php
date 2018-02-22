@@ -108,7 +108,7 @@ abstract class Model implements \jsonSerializable {
 	
 	public static function getAll()
 	{
-		global $database;
+		$database = Database::getInstance()->connect();
 		$lista = [];
 		$tabla = static::$tabla;
 		$consulta = $database->query("SELECT * FROM $tabla");

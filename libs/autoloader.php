@@ -7,9 +7,10 @@ function __autoload($nombre_clase)
 		'system/ORM/',
 		'system/Exceptions/',
 		'class/',
-		'class/Usuario/'
+		'class/Usuario/',
+		'controllers/'
 	);
-	
+
 	foreach($directories as $directory)
 	{
 		$parts = explode('\\', $nombre_clase);
