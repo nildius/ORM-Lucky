@@ -1,0 +1,8 @@
+{
+    "name": "lucky/php-orm",
+    "description": "ORM en PHP por Lucky",
+    "type": "project",
+    "require": {
+        "miladrahimi/phprouter": "^2.3"
+    }
+}
