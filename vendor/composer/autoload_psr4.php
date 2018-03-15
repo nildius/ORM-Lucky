@@ -6,5 +6,12 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'model\\' => array($baseDir . '/app/model'),
+    'exceptions\\' => array($baseDir . '/libs/core/Exceptions'),
+    'core\\' => array($baseDir . '/libs/core'),
+    'Twig\\' => array($vendorDir . '/twig/twig/src'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'MiladRahimi\\' => array($vendorDir . '/miladrahimi/phprouter/src/MiladRahimi'),
+    'Ajaxray\\PHPWatermark\\' => array($vendorDir . '/ajaxray/php-watermark/src/Ajaxray/PHPWatermark'),
+    '' => array($baseDir . '/app/controllers'),
 );

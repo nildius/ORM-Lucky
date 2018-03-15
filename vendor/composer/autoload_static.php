@@ -6,18 +6,88 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit547367f5ed26ef0792fb7590289ec8e2
 {
+    public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'm' => 
+        array (
+            'model\\' => 6,
+        ),
+        'e' => 
+        array (
+            'exceptions\\' => 11,
+        ),
+        'c' => 
+        array (
+            'core\\' => 5,
+        ),
+        'T' => 
+        array (
+            'Twig\\' => 5,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+        ),
         'M' => 
         array (
             'MiladRahimi\\' => 12,
         ),
+        'A' => 
+        array (
+            'Ajaxray\\PHPWatermark\\' => 21,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'model\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/model',
+        ),
+        'exceptions\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/libs/core/Exceptions',
+        ),
+        'core\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/libs/core',
+        ),
+        'Twig\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/twig/twig/src',
+        ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
         'MiladRahimi\\' => 
         array (
             0 => __DIR__ . '/..' . '/miladrahimi/phprouter/src/MiladRahimi',
         ),
+        'Ajaxray\\PHPWatermark\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ajaxray/php-watermark/src/Ajaxray/PHPWatermark',
+        ),
+    );
+
+    public static $fallbackDirsPsr4 = array (
+        0 => __DIR__ . '/../..' . '/app/controllers',
+    );
+
+    public static $prefixesPsr0 = array (
+        'T' => 
+        array (
+            'Twig_' => 
+            array (
+                0 => __DIR__ . '/..' . '/twig/twig/lib',
+            ),
+        ),
+    );
+
+    public static $classMap = array (
+        'Zebra_Image' => __DIR__ . '/..' . '/stefangabos/zebra_image/Zebra_Image.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -25,6 +95,9 @@ class ComposerStaticInit547367f5ed26ef0792fb7590289ec8e2
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit547367f5ed26ef0792fb7590289ec8e2::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit547367f5ed26ef0792fb7590289ec8e2::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInit547367f5ed26ef0792fb7590289ec8e2::$fallbackDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit547367f5ed26ef0792fb7590289ec8e2::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit547367f5ed26ef0792fb7590289ec8e2::$classMap;
 
         }, null, ClassLoader::class);
     }
