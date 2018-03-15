@@ -1,11 +1,11 @@
 ## Contenido
 * ORM propio, basado en PDO
 * Enrutador
-* Gestor de vistas (proximamente)
+* Gestor de vistas con Twig
 
 ## Instalación
 * Instalar Composer
-* Ejecutar `composer dump-autoload`
+* Ejecutar `composer install`
 
 ## Dependencias
 * [PHP Router por miladrahimi](https://github.com/miladrahimi/phprouter)
