@@ -2,14 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: Lucky
- * Date: 08/02/2018
- * Time: 20:11
+ * Date: 16/03/2018
+ * Time: 19:41
  */
 namespace core\Exceptions;
 
 use Exception;
+use Throwable;
 
-class ConexionNoEstablecidaException extends Exception
+class CampoNoExisteEnModeloError extends Exception
 {
 	
 }
