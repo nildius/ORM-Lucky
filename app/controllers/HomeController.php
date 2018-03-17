@@ -1,4 +1,6 @@
 <?php
+use core\Database\Database;
+use function core\render;
 use model\Usuario\Usuario;
 use Tightenco\Collect\Support\Collection;
 
@@ -12,10 +14,6 @@ class HomeController
 {
 	public function index()
 	{
-		$usuarios = Usuario::getAll();
-		foreach($usuarios as $user)
-		{
-			echo "=> ".$user->displayName()." <br>";
-		}
+		echo render()->render("index.twig");
 	}
 }

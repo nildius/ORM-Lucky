@@ -17,5 +17,6 @@ define("DIRECTORY_ROOT", $_SERVER['DOCUMENT_ROOT'] . "");
 define("DIRECTORY_LIBS", DIRECTORY_ROOT . "/libs");
 define("DIRECTORY_CONTROLLERS", DIRECTORY_ROOT . "/controllers");
 define("DOMAIN", "http://genubisouls.local");
+define("SHOW_ERRORS", true);
 
 define("ERROR_PAGE_404", "/404");

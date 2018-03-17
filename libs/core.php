@@ -6,6 +6,7 @@
  * Time: 0:00
  */
 
+use core\Database\Database;
 use Whoops\Run;
 
 error_reporting( E_ALL );
@@ -21,3 +22,5 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
 $whoops = new Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
+
+Database::connect();

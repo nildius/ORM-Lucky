@@ -57,3 +57,8 @@ class Render
 	}
 	
 }
+
+function render() : Twig_Environment
+{
+	return Render::$twig;
+}

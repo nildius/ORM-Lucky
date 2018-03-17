@@ -74,7 +74,7 @@ abstract class Model implements \jsonSerializable {
 	
 	public static function where(Formatter $where) : self
 	{
-		$database = Database::getInstance()->connect();
+		$database = Database::connect();
 		$tabla = static::$tabla;
 		
 		$query = "SELECT * FROM $tabla " . $where->format();
@@ -89,7 +89,7 @@ abstract class Model implements \jsonSerializable {
 	
 	public static function whereMultiple(Formatter $where) : Collection
 	{
-		$database = Database::getInstance()->connect();
+		$database = Database::connect();
 		$tabla = static::$tabla;
 		$lista = new Collection();
 		
@@ -104,7 +104,7 @@ abstract class Model implements \jsonSerializable {
 	
 	public static function whereRaw(String $string) : Collection
 	{
-		$database = Database::getInstance()->connect();
+		$database = Database::connect();
 		$tabla = static::$tabla;
 		$lista = new Collection();
 		
@@ -122,7 +122,7 @@ abstract class Model implements \jsonSerializable {
 	{
 		if($id === null)
 			return null;
-		$database = Database::getInstance()->connect();
+		$database = Database::connect();
 		$tabla = static::$tabla;
 		$identificador = static::$identificador;
 		$query = $database->prepare("SELECT * FROM $tabla WHERE $identificador = :id");
@@ -147,7 +147,7 @@ abstract class Model implements \jsonSerializable {
 	
 	public static function getAll() : Collection
 	{
-		$database = Database::getInstance()->connect();
+		$database = Database::connect();
 		$lista = new Collection();
 		$tabla = static::$tabla;
 		$consulta = $database->query("SELECT * FROM $tabla");
@@ -161,7 +161,7 @@ abstract class Model implements \jsonSerializable {
 	
 	public function delete()
 	{
-		$database = Database::getInstance()->connect();
+		$database = Database::connect();
 		$tabla = static::$tabla;
 		$identi = static::$identificador;
 		$database->query("DELETE FROM $tabla WHERE $identi = " . $this->campos[lcfirst($identi)]);
@@ -169,7 +169,7 @@ abstract class Model implements \jsonSerializable {
 	
 	public function save()
 	{
-		$database = Database::getInstance()->connect();
+		$database = Database::connect();
 		$queryBuilder = new QueryBuilder($this->campos);
 		$tabla = static::$tabla;
 		$identi = static::$identificador;
@@ -186,7 +186,7 @@ abstract class Model implements \jsonSerializable {
 	
 	public function insert()
 	{
-		$database = Database::getInstance()->connect();
+		$database = Database::connect();
 		$tabla = static::$tabla;
 		$identi = static::$identificador;
 		$queryBuilder = new QueryBuilder($this->campos);
