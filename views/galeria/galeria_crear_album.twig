@@ -1,0 +1,36 @@
+{% extends "layouts/main.twig" %}
+
+{% block breadcrumb %}
+    <div class="bread">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="{{ url("/galeria") }}">Galería</a></li>
+            <li>Crear nuevo álbum</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1>Crear nuevo álbum</h1>
+    <form action="{{ url("/galeria/crearAlbum") }}" method="POST">
+        <div class="form-group">
+            <label for="">Nombre del álbum</label>
+            <input name="nombre" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">Descripción</label>
+            <input name="desc" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">Tipo</label>
+            <select name="" id="" class="form-control">
+                <option value="dibujos">Album de fotos y dibujos</option>
+                <option value="comics">Comics/Historietas</option>
+            </select>
+        </div>
+        <input class="btn btn-success" type="submit" value="Siguiente">
+    </form>
+    <div class="vista-previa">
+
+    </div>
+{% endblock %}

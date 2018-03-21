@@ -6,5 +6,18 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'model\\' => array($baseDir . '/app/model'),
+    'exceptions\\' => array($baseDir . '/libs/core/Exceptions'),
+    'core\\' => array($baseDir . '/libs/core'),
+    'Whoops\\' => array($vendorDir . '/filp/whoops/src/Whoops'),
+    'Twig\\' => array($vendorDir . '/twig/twig/src'),
+    'Tightenco\\Collect\\' => array($vendorDir . '/tightenco/collect/src/Collect'),
+    'Symfony\\Polyfill\\Php72\\' => array($vendorDir . '/symfony/polyfill-php72'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
+    'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
+    'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
     'MiladRahimi\\' => array($vendorDir . '/miladrahimi/phprouter/src/MiladRahimi'),
+    'Ajaxray\\PHPWatermark\\' => array($vendorDir . '/ajaxray/php-watermark/src/Ajaxray/PHPWatermark'),
+    '' => array($baseDir . '/app/controllers'),
 );

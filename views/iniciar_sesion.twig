@@ -1,0 +1,33 @@
+{% extends "layouts/login.twig" %}
+
+{% block breadcrumb %}
+<div class="bread">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li>Iniciar sesión</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="login-box">
+            <img class="login-image" src="{{ asset('images/login.png') }}" alt="Login">
+            <form action="/iniciar-sesion/login" method="POST">
+                <div class="form-group">
+                    <label for="">Correo electrónico</label>
+                    <input name="correo" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">Contraseña</label>
+                    <input name="password" type="password" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input id="remind" type="checkbox" name="remind"> <label for="remind">Recordar en el navegador</label>
+                </div>
+                <input type="submit" class="btn btn-success" name="login" value="Iniciar sesión">
+                <a href="#" class="btn btn-warning">Olvidé mi contraseña</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

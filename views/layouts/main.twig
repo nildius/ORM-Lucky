@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Genubi Souls</title>
+
+    <link rel="stylesheet" href="{{ asset("css/bootstrap.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/fontawesome-all.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/estilo.css") }}">
+    <link rel="stylesheet" href="{{ asset("plugins/imageViewer/viewer.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("plugins/dragula/dragula.min.css") }}">
+    <link rel="icon" href="{{ asset("favicon.ico") }}" type="image/x-icon">
+</head>
+
+<body>
+{{ include('layouts/components/navbar.twig') }}
+<div class="container">
+    <div class="main-wrapper">
+        <section class="main-section">
+            {% block breadcrumb %}
+            {% endblock %}
+            <div class="row">
+                <div class="col-md-9">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+                <div class="col-md-3">
+                    {{ include("layouts/components/sidebar.twig") }}
+                </div>
+            </div>
+
+        </section>
+    </div>
+</div>
+</body>
+<script src="{{ asset("js/jquery.js") }}"></script>
+<script src="{{ asset("js/bootstrap.min.js") }}"></script>
+<script src="{{ asset("js/navbar.js") }}"></script>
+<script src="{{ asset("plugins/bootstrap-notify.min.js") }}"></script>
+<script src="{{ asset("plugins/imageViewer/viewer.min.js") }}"></script>
+<script src="{{ asset('plugins/dragula/dragula.min.js') }}"></script>
+{{ include("layouts/notif_manager.twig") }}
+{% block custom_javascript %}
+{% endblock %}
+
+</html>

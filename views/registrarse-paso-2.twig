@@ -1,0 +1,99 @@
+{% extends "layouts/login.twig" %}
+
+{% block breadcrumb %}
+<div class="bread">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li>Registrarse</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="login-box">
+            <img class="login-image" src="{{ asset('images/register.png') }}" alt="Login">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                        <li class="disabled"><a href="#step-1">
+                                <h4 class="list-group-item-heading">Paso 1</h4>
+                                <p class="list-group-item-text">Alta de datos</p>
+                            </a></li>
+                        <li class="active"><a href="#step-2">
+                                <h4 class="list-group-item-heading">Paso 2</h4>
+                                <p class="list-group-item-text">Creación de perfil</p>
+                            </a></li>
+                        <li class="disabled"><a href="#step-3">
+                                <h4 class="list-group-item-heading">Paso 3</h4>
+                                <p class="list-group-item-text">¡Ya eres miembro!</p>
+                            </a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="box">
+                <p>Sólo falta un paso para que tu registro esté completo.</p>
+            </div>
+            <form style="margin-top: 15px;" action="{{ url("/iniciar-sesion/registrarse/paso-2") }}" method="POST">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Clase*</label>
+                            <select class="form-control" name="" id="">
+                                <option selected disabled>Selecciona una clase</option>
+                                {% for clase in listaClases %}
+                                    <option value="">{{ clase.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Raza*</label>
+                            <select class="form-control" name="" id="">
+                                <option selected disabled>Selecciona una raza</option>
+                                {% for raza in listaRazas %}
+                                    <option value="">{{ raza.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="">¿Qué prefieres?</label>
+                            <select name="" id="" class="form-control">
+                                <option selected disabled>Seleccionar</option>
+                                <option value="">Dia</option>
+                                <option value="">Noche</option>
+                            </select>
+                            <select name="" id="" class="form-control">
+                                <option selected disabled>Seleccionar</option>
+                                <option value="">El bien</option>
+                                <option value="">El mal</option>
+                            </select>
+                            <select name="" id="" class="form-control">
+                                <option selected disabled>Seleccionar</option>
+                                <option value="">El Tiempo</option>
+                                <option value="">El Dinero</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="">Avatar</label>
+                            <input type="file" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="g-recaptcha" data-sitekey="6LeA-UkUAAAAANj7EVtsUhxGkWnOgAAQ_pTYaOUg"></div>
+                <input type="submit" class="btn btn-success" name="login" value="Registrarse">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_javascript %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}

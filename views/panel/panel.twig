@@ -1,0 +1,58 @@
+{% extends "layouts/main.twig" %}
+
+{% block breadcrumb %}
+    <div class="bread">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li>Panel de control</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% set personajes = usuario.getPersonajes() %}
+
+{% block content %}
+    <h1>Mi panel</h1>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#perfil">Mi perfil</a></li>
+        <li><a data-toggle="tab" href="#personajes">Personajes</a></li>
+        <li><a data-toggle="tab" href="#partidas">Partidas</a></li>
+    </ul>
+    <div class="tab-content">
+        <!-- RESUMEN DE PARTIDA -->
+        <div id="perfil" class="tab-pane fade in active tab-pane-custom">
+            <div class="row">
+                <div class="col-md-3">
+
+                </div>
+            </div>
+        </div>
+        <div id="personajes" class="tab-pane fade in">
+            <table class="table table-custom">
+                <thead>
+                <th>Nombre</th>
+                <th>Partida</th>
+                <th>Clase</th>
+                <th>Raza</th>
+                <th>Alineamiento</th>
+                </thead>
+                <tbody>
+                {% for personaje in personajes %}
+                    <td><a href="/panel/personaje/{{ convertSpace(personaje.nombre) }}">{{ personaje.nombre }}</a></td>
+                    <td>{{ personaje.getPartida().nombre }}</td>
+                    <td>
+                        <ul>
+                            {% for clase in personaje.getClases() %}
+                                <li>{{ clase }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>{{ personaje.raza }}</td>
+                    <td>{{ personaje.alineamiento }}</td>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

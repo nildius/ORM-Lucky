@@ -1,0 +1,85 @@
+{% extends "layouts/main.twig" %}
+
+{% block breadcrumb %}
+    <div class="bread">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="{{ url("/galeria") }}">Galería</a></li>
+            <li>Editar álbum</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1>Editar álbum</h1>
+    <form action="{{ url("/galeria/cargarFotos") }}" method="POST" enctype="multipart/form-data">
+        <input class="hidden" type="text" name="id" value="{{ album.id }}">
+        <div class="form-group">
+            <label for="">Nombre del álbum</label>
+            <input name="nombre" type="text" class="form-control" value="{{ album.nombre }}">
+        </div>
+        <div class="form-group">
+            <label for="">Descripción</label>
+            <input name="desc" type="text" class="form-control" value="{{ album.descripcion }}">
+        </div>
+        <div class="form-group">
+            <label for="">Cargar dibujos</label>
+            <input name="dibujos[]" type="file" class="form-control" multiple>
+        </div>
+        <div class="form-group">
+            <label for="">Tipo</label>
+            <select name="" id="" class="form-control">
+                <option value="dibujos">Album de fotos y dibujos</option>
+                <option value="comics">Comics/Historietas</option>
+            </select>
+        </div>
+        <input class="btn btn-success" type="submit" value="Cargar mis dibujos">
+    </form>
+    <div class="vista-previa">
+        <h3>Vista previa:</h3>
+        {% for dibujo in album.getDibujos() %}
+            <img class="dibujo" data-id="{{ dibujo.id }}" data-name="{{ dibujo.nombre }}" data-original="{{ uploads("albumes/#{album.directorio}/#{dibujo.archivo}") }}" src="{{ uploads("albumes/#{album.directorio}/#{dibujo.archivo_thumb}") }}" alt="">
+        {% endfor  %}
+    </div>
+    <div class="alert alert-success">
+        <p>1. La foto que esté en primera posición será la vista previa del álbum</p>
+        <p>2. Puedes arrastrar la foto para cambiar su orden. ¡El orden se guarda automaticamente sin que tengas que hacer nada!</p>
+    </div>
+{% endblock %}
+
+{% block custom_javascript %}
+    <script>
+        var drake = dragula([document.querySelector('.vista-previa')], {});
+
+        drake.on("dragend", function() {
+            var lista = [];
+            var orden = 0;
+            $(".dibujo").each(function(e) {
+              var dibujo = $(this);
+              orden++;
+              var elemento = {
+                  "id" : dibujo.data("id"),
+                  "orden" : orden
+              }
+              lista.push(elemento);
+           });
+           var tabla_json = JSON.stringify(lista);
+           actualizarOrden(tabla_json);
+        });
+        $('.dibujo').viewer({
+            url: 'data-original',
+        });
+
+        function actualizarOrden(tabla)
+        {
+            $.ajax({
+                method: "POST",
+                url: "{{ url("/AJAX/galeria/actualizarOrdenAlbum/#{album.id}") }}",
+                data: { tabla: tabla }
+            })
+            .done(function( msg ) {
+                //alert( "Data Saved: " + msg );
+            });
+        }
+    </script>
+{% endblock %}

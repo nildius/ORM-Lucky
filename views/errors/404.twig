@@ -1,0 +1,9 @@
+{% extends "layouts/main.twig" %}
+
+{% block content %}
+    <h1>Error 404</h1>
+    <p>¡Ups! navegando por el sistema has caído accidentalmente en los territorios del <b>Antiguo</b>. Te recomiendo volver a la página principal tan pronto como puedas.</p>
+    <p><a href="{{ url("/") }}">¡Sácame de aquí!</a></p>
+    <img class="antiguo" src="{{ asset('images/antiguo.jpg') }}" alt="">
+
+{% endblock %}

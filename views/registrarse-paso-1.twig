@@ -1,0 +1,76 @@
+{% extends "layouts/login.twig" %}
+
+{% block breadcrumb %}
+<div class="bread">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li>Registrarse</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="login-box">
+            <img class="login-image" src="{{ asset('images/register.png') }}" alt="Login">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                        <li class="active"><a href="#step-1">
+                                <h4 class="list-group-item-heading">Paso 1</h4>
+                                <p class="list-group-item-text">Alta de datos</p>
+                            </a></li>
+                        <li class="disabled"><a href="#step-2">
+                                <h4 class="list-group-item-heading">Paso 2</h4>
+                                <p class="list-group-item-text">Creación de perfil</p>
+                            </a></li>
+                        <li class="disabled"><a href="#step-3">
+                                <h4 class="list-group-item-heading">Paso 3</h4>
+                                <p class="list-group-item-text">¡Ya eres miembro!</p>
+                            </a></li>
+                    </ul>
+                </div>
+            </div>
+            <form action="{{ url("/iniciar-sesion/registrarse/paso-1") }}" method="POST">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Nombre*</label>
+                            <input name="correo" type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Apellido*</label>
+                            <input name="correo" type="text" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Nickname*</label>
+                            <input name="correo" type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Correo electrónico*</label>
+                            <input name="correo" type="text" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="">Contraseña*</label>
+                    <input name="password" type="password" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="">Fecha de nacimiento*</label>
+                    <input name="password" type="date" class="form-control" required>
+                </div>
+                <div class="g-recaptcha" data-sitekey="6LeA-UkUAAAAANj7EVtsUhxGkWnOgAAQ_pTYaOUg"></div>
+                <input type="submit" class="btn btn-success" name="login" value="Registrarse">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_javascript %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}

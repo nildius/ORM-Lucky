@@ -1,0 +1,43 @@
+{% extends "layouts/main.twig" %}
+
+{% block breadcrumb %}
+<div class="bread">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li>Personajes</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+    <h1>Listado de Personajes</h1>
+    <table class="table table-custom">
+        <thead>
+        <th>Nombre</th>
+        <th>Partida</th>
+        <th>Jugador</th>
+        <th>Clase</th>
+        <th>Raza</th>
+        <th>Alineamiento</th>
+        </thead>
+        <tbody>
+        {% for personaje in listaPersonajes %}
+            <tr>
+                <td><a href="{{ url('/personajes/') }}{{  convertSpace(personaje.nombre) }}">{{ personaje.nombre }}</a></td>
+                <td>{{ personaje.getPartida().nombre }}</td>
+                <td>{{ personaje.getJugador().displayName() }}</td>
+                <td>
+                    <ul>
+                    {% for clase in personaje.getClases() %}
+                        <li>{{ clase }}</li>
+                    {% endfor %}
+                    </ul>
+                </td>
+                <td>{{ personaje.raza }}</td>
+                <td>{{ personaje.alineamiento }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+{% endblock %}

@@ -1,0 +1,532 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+@import url('https://fonts.googleapis.com/css?family=Marcellus+SC');
+
+body {
+    font-family: 'Roboto';
+    background: url('../images/bg3_edited.jpg');
+    font-weight: 400;
+}
+
+b {
+    font-weight: 700;
+}
+
+.bg-blue {
+    background: #223049;
+}
+
+.label-sm {
+    padding: 2px 5px;
+}
+
+/*
+* BARRA DE NAVEGACION
+*/
+
+.topbar {
+    background: #bc1717;
+    border-bottom: 1px solid #000;
+    height: 40px;
+}
+
+.navbar {
+    margin-top: 0px;
+    /*background: #0e0e0e;*/
+    background: rgba(0, 0, 0, 0.9);
+    height: 60px;
+}
+
+.navbar .navbar-brand {
+    position: relative;
+    top: -9px;
+}
+
+.navbar .nav li a {
+    font-family: 'Roboto', serif;
+    font-weight: 400;
+    color: #FFF;
+    font-size: 13px;
+}
+
+.navbar .nav {
+    position: relative;
+    top: 6px;
+}
+
+.navbar .dropdown-menu {
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 0;
+    border: 1px solid #111;
+    position: absolute;
+    top: 56px;
+}
+
+.navbar .dropdown-menu li a {
+    font-size: 14px;
+    padding: 8px 25px;
+}
+
+.navbar .dropdown-menu li a:hover {
+    background: #bc1717;
+}
+
+.navbar .buscador {
+    background: #444;
+    border: 1px solid #222;
+    color: #eee;
+    font-size: 15px;
+    position: relative;
+    top: 8px;
+    margin-left: 30px;
+    height: 30px;
+    padding: 10px;
+}
+
+.main-wrapper {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0px;
+    position: relative;
+    top: 80px;
+}
+
+.main-section {
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 0px;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 10px;
+	-webkit-box-shadow: 0px 0px 114px -28px rgba(245,245,245,0.8);
+	-moz-box-shadow: 0px 0px 114px -28px rgba(245,245,245,0.8);
+	box-shadow: 0px 0px 114px -28px rgba(245,245,245,0.8);
+}
+
+/*
+* ESTILOS PRINCIPALES
+*/
+
+h1 {
+    border-bottom: 2px solid #38415a;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 5px 0px;
+    color: #38415a;
+}
+
+/*
+* NOTICIAS 
+*/
+
+.noticia {
+    border-bottom: 1px solid #444;
+    padding-bottom: 20px;
+    font-size: 13px;
+}
+
+.noticia h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.noticia .extra {
+    font-size: 12px;
+    color: #666;
+    display: block;
+    margin-top: -8px;
+    margin-bottom: 5px;
+}
+
+.sidebar-novedades {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-novedades li {
+    font-size: 12px;
+    border-bottom: 1px solid #bbb;
+    padding: 4px 0px;
+}
+
+.sidebar-novedades .timer {
+    font-size: 10px;
+    color: #555;
+    display: inline;
+}
+
+/*
+* TABLA CUSTOM
+ */
+
+
+.table-custom {
+    border-spacing: 0;
+}
+
+.table-custom thead {
+    background: #5976ad;
+    color: #FFF;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.table-custom thead th {
+    font-weight: 500 !important;
+}
+
+.table-custom tr:nth-child(odd) td {
+     background: #f4f4f4;
+ }
+
+.table-custom tr:nth-child(even) td {
+    background: #fcfcfc;
+}
+
+.table-custom tr td {
+    border-bottom: 1px solid #bbb;
+}
+
+.bread {
+    margin-bottom: -20px;
+}
+
+.bread .breadcrumb {
+    border-radius: 0px !important;
+    font-weight: 500;
+}
+
+.nav-tabs li a {
+    font-weight: 400;
+}
+
+.nav-tabs li.active > a {
+    background: rgba(255, 255, 255, 0.4) !important;
+}
+
+.tab-pane {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/*
+* CUADRO PERSONAJES
+ */
+
+.cuadro_personaje {
+    margin: 3px;
+    position: relative;
+    display: inline-block;
+}
+
+.cuadro_personaje img {
+    border: 1px solid #a07b46;
+}
+
+.cuadro_personaje nombre {
+    position: absolute;
+    top: 103px;
+    left: 1px;
+//border: 1px solid #a07b46;
+    background: rgba(0, 0, 0, 0.8);
+    color: #FFF;
+    font-size: 10px;
+    width: 118px;
+    text-align: center;
+    overflow: hidden;
+    padding: 1px;
+}
+
+.lista_personaje_partida .data {
+    position: absolute;
+    top: 103px;
+    left: 1px;
+    height: 16px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #FFF;
+    font-size: 10px;
+    width: 118px;
+    text-align: center;
+    overflow: hidden;
+    padding: 1px;
+    transition: linear 0.3s;
+}
+
+.cuadro_personaje:hover .data {
+    top: 69px;
+    height: 50px;
+    transition: linear 0.3s;
+}
+
+.caja-perfil-grande {
+    height: 220px;
+    padding: 4px !important;
+}
+
+.caja-perfil .header {
+    background: #5976ad;
+    margin: -5px;
+    padding: 0;
+    height: 30px;
+    color: #FFF;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.caja-perfil .header h4 {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    top: 8px;
+    left: 10px;
+    font-size: 13px;
+}
+
+.caja-perfil {
+    background: #eee;
+    border: 1px solid #ddd;
+    padding: 0px 5px 8px 5px;
+    margin-bottom: 3px;
+}
+
+.datos-perfil {
+    margin-top: 20px;
+    position: relative;
+    left: 20px;
+    display: block !important;
+}
+
+.datos-perfil .nivel {
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #888;
+}
+
+.caja-perfil .relleno {
+    margin-top: 15px;
+    padding: 2px 5px;
+}
+
+.datos-perfil .avatar {
+    position: relative;
+    top: -5px;
+    left: -5px;
+}
+
+.datos-perfil p {
+    display: inline;
+}
+
+.datos-perfil h3 {
+    position: relative;
+    left: 15px;
+    top: -1px;
+    padding: 0;
+    margin: 20px 0px 5px 0px;
+}
+
+.mini-avatar {
+    width: 40px;
+    border-radius: 50%;
+}
+
+.lista_pj_avatar {
+    width: 32px;
+    height: 32px;
+}
+
+.tab-pane-custom {
+    padding: 5px;
+}
+
+.edicionPersonaje {
+    padding: 10px 30px;
+}
+
+.form-control {
+    border-radius: 0;
+    box-shadow: none;
+    font-weight: 500;
+}
+
+.red {
+    color: red;
+    font-weight: 500;
+}
+
+.green {
+    color: green;
+    font-weight: 500;
+}
+
+.antiguo {
+    border-radius: 6px;
+    display: block;
+    margin: auto auto;
+}
+
+.vista-previa {
+    background: #eee;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    padding: 10px;
+    margin-top: 15px;
+}
+
+.vista-previa .dibujo {
+    width: 160px;
+    height: 160px;
+    margin: 4px;
+}
+
+.alert-yellow {
+    background-color: #dcc663;
+    border-color: #af9d4f;
+    border-radius: 3px;
+    color: #222;
+    padding: 10px;
+}
+
+.alert-green {
+    background-color: #3bcd27;
+    border-color: #30a61f;
+    border-radius: 3px;
+    color: #FFF;
+    padding: 10px;
+    font-weight: 500;
+}
+
+.alert-red {
+    background-color: #cd3e27;
+    border-color: #b03622;
+    border-radius: 3px;
+    color: #FFF;
+    padding: 10px;
+    font-weight: 500;
+}
+
+.galeria .prev {
+    width: 250px;
+    height: 250px;
+}
+
+.galeria .cover {
+    position: relative;
+    margin: 3px;
+    display: inline-block;
+    text-shadow: -1px 1px 1px #000;
+    width: 250px;
+    height: 250px;
+    background: #2b669a;
+}
+
+.galeria .cover .nombre {
+    position: absolute;
+    bottom: 5px;
+    left: 7px;
+    color: #FFF;
+    font-weight: 600;
+}
+
+.galeria .cover .nombre .cantidad {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.album .dibujo {
+    width: 200px;
+    heightt: 200px;
+    margin: 2px;
+}
+
+.login-box {
+    padding: 10px;
+    background: #f9f9f9;
+    border: 2px solid #eee;
+    width: 600px;
+    min-height: 300px;
+    margin: 200px auto auto;
+}
+
+.login-box input {
+
+}
+
+.login-box .login-image
+{
+    display: block;
+    margin: 15px auto;
+}
+
+.medallas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.medallas .medalla {
+    margin: 2px;
+    position: relative;
+}
+
+.medallas .medalla .overlay {
+    position: absolute;
+    display: none;
+    width: 500px;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 14px;
+    color: #FFF;
+    z-index: 10;
+    border-radius: 3px;
+}
+
+.medallas .medalla .overlay h3 {
+    margin: 5px 0;
+}
+
+.medallas .medalla .overlay p {
+    text-align: justify;
+}
+
+.medallas .medalla:hover > .overlay {
+    display: block;
+ }
+
+
+/**
+ * Tooltip Styles
+ */
+
+.box {
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 8px;
+    font-size: 12px;
+}
+
+.resumen_player {
+    background: #FFF;
+    border: 1px solid #ddd;
+    text-transform: uppercase;
+    display: block;
+    padding: 6px 5px 6px 10px;
+    margin-top: 3px;
+}
+
+.resumen_player:hover {
+    cursor: pointer;
+}
+
+.resumen_player_contenido {
+    background: #FFF;
+    border: 1px solid #ddd;
+    padding: 15px;
+    font-size: 12px;
+    margin-top: -1px;
+}
+
+.resumen_player_contenido .avatar {
+    border: 1px solid #5976ad;
+}
+
+.resumen_player_contenido h3 {
+    margin-top: 7px;
+}

@@ -1,0 +1,90 @@
+{% extends "layouts/main.twig" %}
+
+{%  set personaje_semana = sesion.getPersonajeSemana() %}
+
+{% block breadcrumb %}
+    <div class="bread">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/partidas">Partidas</a></li>
+            <li><a href="/partidas/{{ partida.getUrlName() }}">{{ partida.nombre }}</a></li>
+            <li>{{ sesion.titulo }}</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1>{{ sesion.titulo}}</h1>
+    <img src="http://genubi.com.ar/uploads/partidas/antiguo.png" alt="">
+    <div class="box" style="margin-top: 10px;">
+        <h3 class="text-center">{{ sesion.titulo }}</h3>
+        <p>Jugada el {{ sesion.fecha_juego.format("d/m/Y") }}. Creado por {{ sesion.jugador.displayName() }}</p>
+
+
+        <!-- * PERSONAJE DE LA SEMANA * -->
+        {%  if personaje_semana is defined %}
+        <div class="personaje_semana">
+            <img src="{{ personaje_semana.avatar }}" alt="">
+            <h3>{{ personaje_semana.nombre }}</h3>
+            <p>{{ sesion.motivo_semana }}</p>
+        </div>
+        {% endif %}
+
+        <!-- SI ES EL ULTIMO JOURNAL, MOSTRAMOS EXPERIENCIAS -->
+        {% if sesion.esUltimo is not null %}
+        <hr>
+        <table class="table table-custom table-bordered table-condensed">
+            <thead>
+            <tr>
+                <th>Personaje</th>
+                <th>Experiencia</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for paquete in listaExperiencias %}
+                {% set personaje = paquete.pj %}
+                <tr>
+                    <td>{{ personaje.nombre }}</td>
+                    <td>{{ paquete.cantidad }}</td>
+                </tr>
+            {% endfor %}
+            {% if listaExperiencias | length == 0 %}
+            <tr>
+                <td colspan="2" class="text-center">El Dungeon Master de esta partida aún no ha cargado las experiencias.</td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <!-- REGISTROS DE PERSONAJES -->
+        {% for participacion in participaciones %}
+            {% set personaje = participacion.personaje %}
+            {% set autor = personaje.jugador %}
+            <a class="resumen_player" data-toggle="collapse" data-target="#resumen_{{ personaje.getUrlName() }}">{{ personaje.nombre }}</a>
+            <div id="resumen_{{ personaje.getUrlName() }}" class="collapse resumen_player_contenido">
+                <div class="row">
+                    <div class="col-md-2 text-center">
+                        <img class="avatar" src="{{ personaje.avatar }}" alt="">
+                        <h3>{{ personaje.nombre }}</h3>
+                        <p>{{ autor.displayName() }} <br> {{ participacion.fecha_creacion.format("d/m/Y") }}</p>
+                        <p style="font-size: 16px; color: gold">
+                            {% for x in 0 .. participacion.puntaje %}
+                                <i class="fa fa-star"></i>
+                            {% endfor %}
+                        </p>
+                        <hr>
+                        {% if usuario and autor.id == usuario.id %}
+                        <a class="btn btn-success btn-xs" href="journal_perfil_participacion_edit.php?id=<?= $p->id ?>">Editar</a>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-10">
+                        {{ participacion.descripcion | raw }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Genubi Souls</title>
+
+    <link rel="stylesheet" href="{{ asset("css/bootstrap.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/fontawesome-all.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/estilo.css") }}">
+    <link rel="icon" href="{{ asset("dist/favicon.ico") }}" type="image/x-icon">
+</head>
+
+<body>
+{{ include('layouts/components/navbar.twig') }}
+{% block content %}
+{% endblock %}
+</body>
+<script src="{{ asset("js/jquery.js") }}"></script>
+<script src="{{ asset("js/bootstrap.min.js") }}"></script>
+<script src="{{ asset("plugins/bootstrap-notify.min.js") }}"></script>
+<script src="{{ asset("js/navbar.js") }}"></script>
+{{ include("layouts/notif_manager.twig") }}
+<script>
+    {% block custom_javascript %}
+    {% endblock %}
+</script>
+
+</html>

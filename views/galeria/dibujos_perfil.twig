@@ -1,0 +1,35 @@
+{% extends "layouts/main.twig" %}
+
+{% block breadcrumb %}
+    <div class="bread">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="{{ url("/galeria/dibujos") }}">Galeria</a></li>
+            <li>Album de dibujos: {{ album.nombre }}</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1>
+        Album: {{ album.nombre }}
+        {% if usuario and album.idUsuario == usuario.id %}
+            <span class="pull-right">
+                <a href="{{ url("/galeria/editarAlbum/#{album.id}") }}">Editar</a>
+            </span>
+        {% endif %}
+    </h1>
+    <div class="album">
+    {% for dibujo in album.dibujos %}
+        <img class="dibujo" data-id="{{ dibujo.id }}" data-name="{{ dibujo.nombre }}" data-original="{{ uploads("albumes/#{album.directorio}/#{dibujo.archivo}") }}" src="{{ uploads("albumes/#{album.directorio}/#{dibujo.archivo_thumb}") }}" alt="">
+    {% endfor %}
+    </div>
+{% endblock %}
+
+{% block custom_javascript %}
+    <script>
+        $('.album').viewer({
+            url: 'data-original',
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "layouts/main.twig" %}
+
+{% block breadcrumb %}
+<div class="bread">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li>Partidas</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+    <h1>Listado de partidas</h1>
+    <table class="table table-custom">
+        <thead>
+        <th>Nombre</th>
+        <th>Jugadores</th>
+        <th>Modalidad</th>
+        <th>Director</th>
+        <th>Juego</th>
+        <th>Zona</th>
+        <th>Estado</th>
+        </thead>
+        <tbody>
+        {% for partida in listaPartidas %}
+            <tr>
+                <td><a href="/partidas/{{ partida.nombre |lower|replace({' ': "-"}) }}">{{ partida.nombre }}</a></td>
+                <td>{{ partida.getCantidadJugadores() }} jugadores</td>
+                <td>{{ partida.modo }}</td>
+                <td>{{ partida.idDirector }}</td>
+                <td>{{ partida.juego }}</td>
+                <td>{{ partida.zona }}</td>
+                <td>{{ partida.estado }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+{% endblock %}

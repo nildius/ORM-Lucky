@@ -1,0 +1,18 @@
+{% extends "layouts/main.twig" %}
+
+{% block content %}
+<h1>Noticias de genubi</h1>
+
+{% for noticia in noticias %}
+    <div class="noticia">
+        <h2>{{ noticia.titulo }}</h2>
+        <div class="extra"><i class="far fa-calendar-alt"></i> Publicado hace {{ noticia.tiempoPasado() }} {{ noticia.fecha_creacion.format("d/m/Y") }} ({{ noticia.fecha_creacion.format("d/m/Y") }}) por <a href="../../index.php">{{ noticia.getUsuario().displayName() }}</a></div>
+        <div class="contenido">
+            {{ noticia.texto | raw }}
+        </div>
+    </div>
+{% endfor %}
+
+<h1>Feed</h1>
+
+{% endblock %}

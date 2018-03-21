@@ -1,0 +1,135 @@
+{% extends "layouts/main.twig" %}
+
+{% block breadcrumb %}
+<div class="bread">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/partidas">Partidas</a></li>
+        <li><a href="/partidas/{{ partida.nombre |lower|replace({" ": "-"}) }}">{{ partida.nombre }}</a></li>
+        <li>{{ personaje.nombre }}</a></li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+    <h1>{{ personaje.nombre }}</h1>
+    <div class="caja-perfil">
+        <div class="header"><h4>Ficha de personaje</h4></div>
+        <div class="datos-perfil">
+            <img class="img-thumbnail pull-left avatar" src="{{ personaje.avatar }}" alt="">
+            <h3>{{ personaje.nombre }} <span class="nivel">Nv. {{ personaje.getNivel() }}</span></h3>
+            <div class="row">
+                <div class="col-md-4">
+                    <b>Partida:</b> <a href="/partidas/{{  convertSpace( partida.nombre) }}"> Antiguo Mal </a><br>
+                    <b>Jugador:</b> <a href="/jugadores/{{ convertSpace( personaje.getJugador().displayName() ) }}">Lucas Lois</a><br>
+                    <b>Clase/Raza:</b> {{ personaje.getClasesInString() }} - {{ personaje.raza }}<br>
+                </div>
+                <div class="col-md-4">
+                    <b>Alineamiento:</b> Neutral Neutral</b><br>
+                    <b>Edad:</b> 33</b><br>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if personaje.descripcion is defined %}
+        <br>
+        <div class="row">
+        <div class="col-md-12">
+            <div class="caja-perfil">
+                <div class="header"><h4>¿Quién es {{ personaje.nombre }}?</h4></div>
+                <div class="relleno">
+                    <td>{{ personaje.descripcion }}</td>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-custom table-bordered">
+                <thead>
+                <th colspan="2">ASISTENCIAS</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>18/02/2018</td>
+                    <td><a href="journal_perfil.php?id=23">Las mismas galletitas</a></td>
+                </tr>
+                <tr>
+                    <td>07/01/2018</td>
+                    <td><a href="journal_perfil.php?id=20">La última cena</a></td>
+                </tr>
+                <tr>
+                    <td>10/12/2017</td>
+                    <td><a href="journal_perfil.php?id=19">Hoy no es un gran día para ser Sinn</a></td>
+                </tr>
+                <tr>
+                    <td>20/11/2017</td>
+                    <td><a href="journal_perfil.php?id=18">El ascenso de Tirlym</a></td>
+                </tr>
+                <tr>
+                    <td>04/11/2017</td>
+                    <td><a href="journal_perfil.php?id=17">El señor de la noche</a></td>
+                </tr>
+                <tr>
+                    <td>16/10/2017</td>
+                    <td><a href="journal_perfil.php?id=16">Nos volveremos a encontrar pronto</a></td>
+                </tr>
+                <tr>
+                    <td>01/10/2017</td>
+                    <td><a href="journal_perfil.php?id=15">Pelea contra nigromante</a></td>
+                </tr>
+                <tr>
+                    <td>17/09/2017</td>
+                    <td><a href="journal_perfil.php?id=14">Cayó la naranja</a></td>
+                </tr>
+                <tr>
+                    <td>02/09/2017</td>
+                    <td><a href="journal_perfil.php?id=13">A diferencia tuya, yo no fallo</a></td>
+                </tr>
+                <tr>
+                    <td>21/08/2017</td>
+                    <td><a href="journal_perfil.php?id=5">El golpe de la gacela que escapa de su presa</a></td>
+                </tr>
+                <tr>
+                    <td>30/07/2017</td>
+                    <td><a href="journal_perfil.php?id=3">Más cielo más infierno!</a></td>
+                </tr>
+                <tr>
+                    <td>16/07/2017</td>
+                    <td><a href="journal_perfil.php?id=1">Cielo e Infierno</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-custom table-bordered">
+                <thead>
+                <th colspan="2">DIBUJOS / FOTOS</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <center>
+                            <div class="yoxview">
+                                <a href="uploads/galeria/sarumo_anime.jpg"><img
+                                            src="uploads/galeria/sarumo_anime_thumb.jpg" alt="Sarumo" title="Sarumo"></a>
+                                <a href="uploads/galeria/manga_sarumo.jpg"><img
+                                            src="uploads/galeria/manga_sarumo_thumb.jpg" alt="Sarumo" title="Sarumo"></a>
+                                <a href="uploads/galeria/sarumo_fanservice.jpg"><img
+                                            src="uploads/galeria/sarumo_fanservice_thumb.jpg" alt="Sarumo" title="Sarumo"></a>
+                                <a href="uploads/galeria/sarumo_andy.jpg"><img
+                                            src="uploads/galeria/sarumo_andy_thumb.jpg" alt="Sarumo" title="Sarumo"></a>
+                                <a href="uploads/galeria/sarumo_chibi.jpg"><img
+                                            src="uploads/galeria/sarumo_chibi_thumb.jpg" alt="Sarumo" title="Sarumo"></a>
+                            </div>
+                        </center>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

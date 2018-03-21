@@ -1,0 +1,231 @@
+{% extends "layouts/main.twig" %}
+
+{% block breadcrumb %}
+    <div class="bread">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/panel">Panel de control</a></li>
+            <li>Edición de {{ personaje.nombre }}</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1>{{ personaje.nombre }}</h1>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#personaje">Personaje</a></li>
+        <li><a data-toggle="tab" href="#experiencia">Experiencia</a></li>
+    </ul>
+    <div class="tab-content">
+        <!-- RESUMEN DE PARTIDA -->
+        <div id="personaje" class="tab-pane fade in active tab-pane-custom">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="edicionPersonaje">
+
+                        <form class="form-horizontal" action="controllers/personajesController.php" method="POST">
+                            <div class="form-group hidden">
+                                <input name="id" type="text" class="form-control" value="{{ personaje.id }}"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Nombre</label>
+                                <div class="col-md-9">
+                                    <input name="nombre" type="text" class="form-control"
+                                           value="{{ personaje.nombre }}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Avatar</label>
+                                <div class="col-md-9">
+                                    <a href="#" data-toggle="modal" data-target="#modalAvatar"><i
+                                                class="fa fa-arrow-up"></i> Cargar imagen de perfil</a>
+                                    <textarea name="avatar" id="avatar" class="hidden"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Raza</label>
+                                <div class="col-md-9">
+                                    <input name="raza" type="text" class="form-control" value="{{ personaje.raza }}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Alineamiento</label>
+                                <div class="col-md-9">
+                                    <select name="alineamiento" class="form-control" id="">
+                                        <? foreach($alineamientos as $key => $value): ?>
+                                        <? if($personaje->alineamiento == $key): ?>
+                                        <option value="<?= $key ?>" selected><?= $value ?></option>
+                                        <? continue; ?>
+                                        <? endif; ?>
+                                        <option value="<?= $key ?>"><?= $value ?></option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Clases <a href="#" id="addClase"><i
+                                                    class="fa fa-plus-circle green"></i></a></label>
+                                </div>
+                                <div class="col-md-9">
+                                    <? foreach($personaje->getClases() as $clase => $nivel): ?>
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <input name="clase[]" type="text" class="form-control"
+                                                   value="<?= $clase ?>"/>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input name="nivel[]" type="text" class="form-control"
+                                                   value="<?= $nivel ?>"/>
+                                        </div>
+                                    </div>
+                                    <? endforeach; ?>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Edad</label>
+                                <div class="col-md-9">
+                                    <input name="edad" type="text" class="form-control" value="{{ personaje.edad }}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Deidad</label>
+                                <div class="col-md-9">
+                                    <input name="deidad" type="text" class="form-control"
+                                           value="{{ personaje.deidad }}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">¿Quién soy?</label>
+                                <div class="col-md-9">
+                                <textarea style="resize: vertical; min-height: 140px;" name="descripcion" id=""
+                                          class="form-control"
+                                          placeholder="Escribe una breve descripción de tu personaje, narrada en primera persona. Por ejemplo: Soy un intrépido explorador en busca de aventuras y nuevas experiencias. Me gustan las bebidas calientes, los combates intesos, y las bellas mujeres. ¡Estoy preparado con mi arco para enfrentar a todo aquel que se ponga en mi camino!">{{ personaje.descripcion }}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Color caracteristico</label>
+                                <div class="col-md-9">
+                                    <a style="color:#274680" onclick="cambiarColor('#274680')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Azul Oscuro -->
+                                    <a style="color:#5D80A9" onclick="cambiarColor('#5D80A9')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Azul -->
+                                    <a style="color:#666FB1" onclick="cambiarColor('#666FB1')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Azul gris -->
+                                    <a style="color:#509A9D" onclick="cambiarColor('#509A9D')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Verdoso -->
+                                    <a style="color:#5DB686" onclick="cambiarColor('#5DB686')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Verdin -->
+                                    <a style="color:#7AD46C" onclick="cambiarColor('#7AD46C')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Verde -->
+                                    <a style="color:#2A9B24" onclick="cambiarColor('#2A9B24')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Verde strong -->
+                                    <a style="color:#d7d87e" onclick="cambiarColor('#d7d87e')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Amarillo -->
+                                    <a style="color:#CFF17C" onclick="cambiarColor('#CFF17C')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Amarillo verdon -->
+                                    <a style="color:#C0722C" onclick="cambiarColor('#C0722C')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Amarillo Marron -->
+                                    <a style="color:#8660AE" onclick="cambiarColor('#5D80A9')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Violeta -->
+                                    <a style="color:#813A92" onclick="cambiarColor('#813A92')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Violeta 2 -->
+                                    <a style="color:#AB58A7" onclick="cambiarColor('#AB58A7')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Violeta rosado -->
+                                    <a style="color:#DF729A" onclick="cambiarColor('#DF729A')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Rosa -->
+                                    <a style="color:#FFB782" onclick="cambiarColor('#FFB782')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Naranja -->
+                                    <a style="color:#BE2C30" onclick="cambiarColor('#BE2C30')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Rojo -->
+                                    <a style="color:#B42942" onclick="cambiarColor('#B42942')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Rojo Vino -->
+                                    <a style="color:#13263C" onclick="cambiarColor('#13263C')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Negro -->
+                                    <a style="color:#E9F2FE" onclick="cambiarColor('#E9F2FE')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Blanco -->
+                                    <a style="color:#535F6B" onclick="cambiarColor('#535F6B')"><i
+                                                class="fa fa-circle fa-3x"></i></a> <!-- Gris -->
+                                    <input id="color" name="color" type="text" class="form-control"
+                                           value="{{ personaje.color }}" readonly/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2"></label>
+                                <input name="guardarPersonaje" class="btn btn-success" type="submit"
+                                       value="Guardar cambios"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="edicionPersonaje">
+                        <img src="{{ personaje.avatar }}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="experiencia" class="tab-pane fade in">
+            <table class="table table-custom">
+                <thead>
+                <tr>
+                    <th width="60">Nivel</th>
+                    <th width="130">Experiencia</th>
+                    <th>Indicador</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    {% set nivelSuma = personaje.getNivel() %}
+                    {% set porcentaje = personaje.getXpActual / personaje.getXpNecesariaNivel(nivelSuma) * 100 %}
+                    <td>{{ nivelSuma }}</td>
+                    <td>{{ personaje.getXpActual() }} / {{ personaje.getXpNecesariaNivel(nivelSuma) }}
+                    <td>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-success active progress-bar-striped"
+                                 role="progressbar"
+                                 aria-valuenow="40"
+                                 aria-valuemin="0" aria-valuemax="100" style="width:{{ porcentaje }}%">
+                                {{ porcentaje| round(1, 'ceil') }}%
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="table-responsive">
+                <table class="table table-custom">
+                    <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Sesión</th>
+                        <th>Experiencia</th>
+                        <th>Motivo</th>
+                        <th>Dada por</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for exp in personaje.getPaquetesExperiencia() %}
+
+                        <tr>
+                            {% set entregador = exp.getEntregador() %}
+                            <td>{{ exp.fecha.format("d/m/Y H:i") }} </td>
+                            <td><?= $sesion_nombre ?></td>
+                            <td>
+                                {% if exp.cantidad > 0 %}
+                                    <span class="green">+{{ exp.cantidad }}</span>
+                                {% else %}
+                                    <span class="red">{{ exp.cantidad }}</span>
+                                {% endif %}
+                            <td>{{ exp.motivo }}</td>
+                            <td>{{ entregador.displayName() }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

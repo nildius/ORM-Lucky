@@ -1,0 +1,98 @@
+{% extends "layouts/main.twig" %}
+
+{% block breadcrumb %}
+    <div class="bread">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/partidas">Partidas</a></li>
+            <li>{{ partida.nombre }}</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1>{{ partida.nombre }}</h1>
+    <img src="http://genubi.com.ar/uploads/partidas/antiguo.png" alt="">
+    <br><br>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#personajes">Personajes</a></li>
+        <li><a data-toggle="tab" href="#sesiones">Sesiones</a></li>
+        <li><a data-toggle="tab" href="#canales">Canales</a></li>
+    </ul>
+    <div class="tab-content">
+        <!-- RESUMEN DE PARTIDA -->
+        <div id="personajes" class="tab-pane fade in active">
+            <div class="resumen_partida">
+                <br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>Nombre de la partida:</dt>
+                            <dd>{{ partida.nombre }}</dd>
+                            <dt>Director de la mesa:</dt>
+                            <dd>{{ partida.getDirector().displayName() }}</dd>
+                            <dt>Juego de mesa:</dt>
+                            <dd>{{ partida.juego }}</dd>
+                            <dt>Integrantes:</dt>
+                            <dd>{{ partida.getCantidadJugadores() }} jugadores</dd>
+                            <dt>Activa desde:</dt>
+                            <dd>{{ partida.fecha_creacion.format("d/m/Y") }}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>Última sesión:</dt>
+                            <dd>-</dd>
+                            <dt>Sesiones totales:</dt>
+                            <dd>-</dd>
+                            <dt>Promedio de nivel:</dt>
+                            <dd>-</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="personajes">
+                            {% for personaje in listaPersonajes %}
+                                <div class="cuadro_personaje lista_personaje_partida">
+                                    <a href="{{ url("/partidas/#{partida.getUrlName()}/#{personaje.getUrlName()}") }}"><img src="{{ personaje.avatar }}"></a>
+                                    <div class="data">
+                                        <span>{{ personaje.nombre }}</span><br>
+                                        <span>Nivel: 1</span><br>
+                                        <span>Jugador: {{ personaje.getJugador().displayName() }}</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sesiones" class="tab-pane fade in">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-custom">
+                        <thead>
+                            <th>Fecha</th>
+                            <th>Título</th>
+                            <th>Descripción</th>
+                            <th width="120">Creado por</th>
+                        </thead>
+                        <tbody>
+                            {% for sesion in partida.sesiones %}
+                                <tr>
+                                    <td>{{ sesion.fecha_juego.format("d/m/Y") }}</td>
+                                    <td><a href="{{ url("/partidas/#{partida.getUrlName()}/sesiones/#{sesion.id}") }}">{{ sesion.titulo }}</a></td>
+                                    <td>{{ sesion.resumen }}</td>
+                                    <td>{{ sesion.jugador.displayName() }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

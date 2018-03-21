@@ -1,0 +1,37 @@
+{% extends "layouts/main.twig" %}
+
+{% block breadcrumb %}
+<div class="bread">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li>Jugadores</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+    <h1>Listado de Jugadores</h1>
+    <table class="table table-custom">
+        <thead>
+        <th>Avatar</th>
+        <th>Nombre</th>
+        <th>Nickname</th>
+        <th>Partidas</th>
+        <th>Clase</th>
+        <th>Nivel</th>
+        </thead>
+        <tbody>
+        {% for jugador in listaJugadores %}
+            <tr>
+                <td><img class="mini-avatar" src="{{ uploads("avatars/#{jugador.avatar}") }}" alt=""></td>
+                <td><a href="/jugadores/{{ jugador.getUrlName() }}">{{ jugador.displayName() }}</a></td>
+                <td>{{ jugador.nickname }}</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+{% endblock %}

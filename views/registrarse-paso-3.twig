@@ -1,0 +1,47 @@
+{% extends "layouts/login.twig" %}
+
+{% block breadcrumb %}
+<div class="bread">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li>Registrarse</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="login-box">
+            <img class="login-image" src="{{ asset('images/register.png') }}" alt="Login">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                        <li class="disabled"><a href="#step-1">
+                                <h4 class="list-group-item-heading">Paso 1</h4>
+                                <p class="list-group-item-text">Alta de datos</p>
+                            </a></li>
+                        <li class="disabled"><a href="#step-2">
+                                <h4 class="list-group-item-heading">Paso 2</h4>
+                                <p class="list-group-item-text">Creación de perfil</p>
+                            </a></li>
+                        <li class="active"><a href="#step-3">
+                                <h4 class="list-group-item-heading">Paso 3</h4>
+                                <p class="list-group-item-text">¡Ya eres miembro!</p>
+                            </a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="box">
+                <div class="texto text-center">
+                    <h2>Felicitaciones</h2>
+                    <p>Has concluído exitosamente el registro. Hemos enviado un correo electrónico para que verifiques la veracidad de tu cuenta. Una vez que actives tu cuenta a través del link, ya podrás comenzar a navegar por nuestra página. ¡Bienvenido!</p>
+                    <p><a href="{{ url("/") }}">Ir a la página principal</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_javascript %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}

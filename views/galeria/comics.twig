@@ -1,0 +1,38 @@
+{% extends "layouts/main.twig" %}
+
+{% block breadcrumb %}
+    <div class="bread">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li>Comics</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1>Galería de comics de Genubi</h1>
+    {% if usuario and usuario.esArtista %}
+    <a class="btn btn-success btn-sm" href="{{ url('/galeria/crearAlbum') }}">Crear nuevo álbum de comics</a>
+    <a class="btn btn-primary btn-sm" href="{{ url('/galeria/comics?param=misAlbumes') }}">Ver mis álbumes</a>
+    <hr>
+    {% endif %}
+    <div class="galeria">
+    {% for album in albumes %}
+        {% set representativa = album.getFotoRepresentativa() %}
+        <a href="{{ url("/galeria/comics/#{album.id}") }}">
+            <div class="cover">
+                <span class="nombre">{{ album.nombre }} <br><span class="cantidad">{{ album.cantidadDeDibujos }} elementos</span></span>
+                {% if representativa is not null %}
+                    <img class="prev" src="{{ uploads("albumes/#{album.directorio}/#{representativa.archivo_thumb}") }}" alt=''>
+                {% else %}
+                    <img class="prev" src="{{ asset('images/book-default.png') }}" alt=''>
+                {% endif %}
+            </div>
+        </a>
+    {% endfor %}
+    </div>
+{% endblock %}
+
+{% block custom_javascript %}
+
+{% endblock %}

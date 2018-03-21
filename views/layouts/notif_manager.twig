@@ -1,0 +1,12 @@
+<script>
+    {% for notificacion in notificaciones %}
+        $.notify({
+            icon: '{{ notificacion.getIcon() }}',
+            title: '',
+            message: '{{ notificacion.getTexto() }}',
+        },{
+            // settings
+            type: '{{ notificacion.getType() }}',
+        });
+    {% endfor %}
+</script>
