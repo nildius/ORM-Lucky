@@ -36,22 +36,19 @@ class Render
 		$functionUploads = new Twig_Function('uploads', function($ruta) {
 			return DOMAIN . "/uploads/" . $ruta;
 		});
-		$functionSpaceToGuion = new Twig_Function('convertSpace', function($texto) {
-			return strtolower(str_replace(" ", "-", $texto));
-		});
 		
 		Render::$twig->addFunction($functionRoot);
 		Render::$twig->addFunction($functionUrl);
 		Render::$twig->addFunction($functionAsset);
-		Render::$twig->addFunction($functionSpaceToGuion);
 		Render::$twig->addFunction($functionLink);
 		Render::$twig->addFunction($functionUploads);
 		
 		$auth = Auth::getAuth();
 		$usuario = $auth->getUsuario();
 		
-		Render::$twig->addGlobal("usuario", $usuario);
-		Render::$twig->addGlobal("notificaciones", $auth->getNotificaciones());
+		$app = App::getInstance();
+		
+		Render::$twig->addGlobal("app", $app);
 		
 		$auth->deleteNotificaciones();
 	}

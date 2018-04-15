@@ -72,7 +72,7 @@ abstract class Model implements \jsonSerializable {
 	
 	// FIN METODOS MAGICOS
 	
-	public static function where(Formatter $where) : self
+	public static function where(Formatter $where) : ?self
 	{
 		$database = Database::connect();
 		$tabla = static::$tabla;
@@ -118,7 +118,7 @@ abstract class Model implements \jsonSerializable {
 		return $lista;
 	}
 	
-	public static function get($id) : self
+	public static function get($id) : ?self
 	{
 		if($id === null)
 			return null;
@@ -184,7 +184,7 @@ abstract class Model implements \jsonSerializable {
 		$query->execute();
 	}
 	
-	public function insert()
+	public function insert() : boolean
 	{
 		$database = Database::connect();
 		$tabla = static::$tabla;
